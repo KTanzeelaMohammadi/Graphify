@@ -1,14 +1,8 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
-import {
-  Sparkles,
-  X,
-  Send,
-  Trash2,
-  Settings,
-  Check,
-  Key,
-} from 'lucide-react';
+import { Sparkles, X, Send, Trash2 } from 'lucide-react';
 import type { Graph, ExecutionTrace } from '../../core/types';
+
+declare const __GEMINI_API_KEY__: string | undefined;
 import {
   serializeGraphContext,
   buildSystemPrompt,
@@ -49,14 +43,15 @@ export const GraphAIChatbot: React.FC<GraphAIChatbotProps> = ({
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputText, setInputText] = useState<string>('');
   const [isThinking, setIsThinking] = useState<boolean>(false);
+
   const defaultKey =
+    (typeof __GEMINI_API_KEY__ !== 'undefined' ? __GEMINI_API_KEY__ : '') ||
+    ((import.meta as any).env?.gemini_api_key as string) ||
+    ((import.meta as any).env?.GEMINI_API_KEY as string) ||
     localStorage.getItem('mst-gemini-api-key') ||
-    ((import.meta as any).env?.VITE_GEMINI_API_KEY as string) ||
     '';
 
-  const [showSettings, setShowSettings] = useState<boolean>(false);
-  const [apiKey, setApiKey] = useState<string>(() => defaultKey);
-  const [keyInput, setKeyInput] = useState<string>('');
+  const [apiKey] = useState<string>(() => defaultKey);
 
   // Persist default key to localStorage if unset
   useEffect(() => {
@@ -205,13 +200,6 @@ You can ask me step-by-step explanations, why specific edges are accepted or rej
     setInputText('');
   };
 
-  const handleSaveApiKey = () => {
-    const trimmed = keyInput.trim();
-    setApiKey(trimmed);
-    localStorage.setItem('mst-gemini-api-key', trimmed);
-    setShowSettings(false);
-  };
-
   // Minimal Markdown Formatter
   const renderFormattedMarkdown = (text: string) => {
     const lines = text.split('\n');
@@ -342,17 +330,6 @@ You can ask me step-by-step explanations, why specific edges are accepted or rej
         <div className="mst-ai-actions">
           <button
             className="mst-ai-icon-btn"
-            onClick={() => {
-              setKeyInput(apiKey);
-              setShowSettings(!showSettings);
-            }}
-            title="AI Model Settings (Optional API Key)"
-            aria-label="Settings"
-          >
-            <Settings size={14} />
-          </button>
-          <button
-            className="mst-ai-icon-btn"
             onClick={handleClearHistory}
             title="Clear Chat History"
             aria-label="Clear chat history"
@@ -369,39 +346,6 @@ You can ask me step-by-step explanations, why specific edges are accepted or rej
           </button>
         </div>
       </div>
-
-      {/* Optional Gemini Settings Panel */}
-      {showSettings && (
-        <div className="mst-ai-settings-panel">
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <span style={{ fontWeight: 600, display: 'flex', alignItems: 'center', gap: '5px' }}>
-              <Key size={13} style={{ color: 'var(--color-primary)' }} />
-              <span>Google Gemini API Key (Optional)</span>
-            </span>
-            <span style={{ fontSize: '0.68rem', color: 'var(--text-muted)' }}>
-              {apiKey ? 'Configured ✅' : 'Using Smart Offline Engine'}
-            </span>
-          </div>
-          <div style={{ display: 'flex', gap: '6px', marginTop: '4px' }}>
-            <input
-              type="password"
-              className="mst-ai-settings-input"
-              style={{ flex: 1 }}
-              placeholder="AIzaSy..."
-              value={keyInput}
-              onChange={(e) => setKeyInput(e.target.value)}
-            />
-            <button
-              className="mst-pill-btn"
-              onClick={handleSaveApiKey}
-              style={{ padding: '3px 10px', fontSize: '0.72rem' }}
-            >
-              <Check size={12} />
-              <span>Save</span>
-            </button>
-          </div>
-        </div>
-      )}
 
       {/* Dynamic Action Chips */}
       <div className="mst-ai-chips-bar" aria-label="Suggested questions">
