@@ -78,6 +78,43 @@ body.is-studio .mst-app-root,
   letter-spacing: -0.01em;
 }
 
+.mst-brand-img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  display: block;
+}
+
+/* Theme-aware logo display */
+:root[data-theme="dark"] .light-only {
+  display: none !important;
+}
+:root[data-theme="dark"] .dark-only {
+  display: inline-block !important;
+}
+
+:root[data-theme="light"] .dark-only {
+  display: none !important;
+}
+:root[data-theme="light"] .light-only {
+  display: inline-block !important;
+}
+
+.mst-hero-full-logo {
+  height: 38px;
+  width: auto;
+  object-fit: contain;
+  margin-bottom: 0.9rem;
+  display: block;
+}
+
+.mst-footer-full-logo {
+  height: 22px;
+  width: auto;
+  object-fit: contain;
+  display: inline-block;
+}
+
 /* Center Tabs: Home, Visualizer, About, FAQs */
 .mst-nav-center {
   display: flex;

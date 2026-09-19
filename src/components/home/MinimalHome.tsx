@@ -7,13 +7,14 @@ import {
   Sliders,
   Layers,
   Cpu,
-  Share2,
   ExternalLink,
   ChevronDown,
   Info,
   CheckCircle2,
 } from 'lucide-react';
 import { HeroGraphGraphic } from './HeroGraphGraphic';
+import graphifyLogoFull from '../../assets/graphify-logo-full.png';
+import graphifyLogoFullDark from '../../assets/graphify-logo-full-dark.png';
 
 interface MinimalHomeProps {
   onOpenVisualizer: () => void;
@@ -303,6 +304,19 @@ export const MinimalHome: React.FC<MinimalHomeProps> = ({
       <section className="mst-hero-section" id="hero">
         {/* Left Hero Content */}
         <div className="mst-hero-left">
+          <div className="mst-hero-brand-wrap">
+            <img
+              src={graphifyLogoFullDark}
+              alt="Graphify"
+              className="mst-hero-full-logo dark-only"
+            />
+            <img
+              src={graphifyLogoFull}
+              alt="Graphify"
+              className="mst-hero-full-logo light-only"
+            />
+          </div>
+
           <div className="mst-hero-tag">VISUALIZE • EXPLORE • UNDERSTAND</div>
 
           <h1 className="mst-hero-title">
@@ -623,9 +637,17 @@ export const MinimalHome: React.FC<MinimalHomeProps> = ({
       {/* Clean Minimalist Footer */}
       <footer className="mst-home-footer">
         <div className="mst-footer-left">
-          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-            <Share2 size={16} color="var(--color-primary)" />
-            <span style={{ fontWeight: 700, fontSize: '0.875rem', color: 'var(--text-primary)' }}>MST Lab</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <img
+              src={graphifyLogoFullDark}
+              alt="Graphify"
+              className="mst-footer-full-logo dark-only"
+            />
+            <img
+              src={graphifyLogoFull}
+              alt="Graphify"
+              className="mst-footer-full-logo light-only"
+            />
           </div>
           <span className="mst-footer-text">• Minimum Spanning Tree Interactive Platform</span>
         </div>

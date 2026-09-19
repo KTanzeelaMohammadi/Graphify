@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { Sparkles, X, Send, Trash2 } from 'lucide-react';
 import type { Graph, ExecutionTrace } from '../../core/types';
+import graphifyIcon from '../../assets/graphify-icon.png';
 
 declare const __GEMINI_API_KEY__: string | undefined;
 import {
@@ -318,7 +319,11 @@ You can ask me step-by-step explanations, why specific edges are accepted or rej
       <div className="mst-ai-header">
         <div className="mst-ai-title-wrap">
           <span className="mst-ai-title">
-            <Sparkles size={15} style={{ color: 'var(--color-primary)' }} />
+            <img
+              src={graphifyIcon}
+              alt="Graphify"
+              style={{ width: '16px', height: '16px', objectFit: 'contain' }}
+            />
             <span>Graph AI</span>
           </span>
           <span className="mst-ai-sync-badge" title="Assistant is in real-time sync with canvas topology and traces">

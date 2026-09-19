@@ -1,6 +1,6 @@
 import React from 'react';
 import { Sun, Moon, ArrowRight } from 'lucide-react';
-import { MSTLogo } from './MSTLogo';
+import graphifyIcon from '../../assets/graphify-icon.png';
 
 interface NavbarProps {
   currentView: 'HOME' | 'STUDIO';
@@ -29,13 +29,13 @@ export const Navbar: React.FC<NavbarProps> = ({
         onClick={onNavigateHome}
         role="button"
         tabIndex={0}
-        title="MST Lab Home"
+        title="Graphify Home"
         onKeyDown={(e) => e.key === 'Enter' && onNavigateHome()}
       >
         <div className="mst-brand-logo">
-          <MSTLogo size={22} />
+          <img src={graphifyIcon} alt="Graphify" className="mst-brand-img" />
         </div>
-        <span className="mst-brand-name">MST Lab</span>
+        <span className="mst-brand-name">Graphify</span>
       </div>
 
       {/* Center Nav Tabs: Home, About, FAQs */}
