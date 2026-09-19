@@ -12,6 +12,7 @@ import type { Edge } from './core/types';
 import './styles/variables.css';
 import './styles/minimal.css';
 import './styles/global.css';
+import './styles/aiChat.css';
 
 export function App() {
   const [currentView, setCurrentView] = useState<'HOME' | 'STUDIO'>(() => {

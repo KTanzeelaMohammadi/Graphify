@@ -24,6 +24,8 @@ import { VerticalSplitResizeHandle } from '../layout/VerticalSplitResizeHandle';
 import { HorizontalSplitResizeHandle } from '../layout/HorizontalSplitResizeHandle';
 import { MasterToolbar } from '../controls/MasterToolbar';
 import { InspectorDock } from '../education/InspectorDock';
+import { GraphAIChatbot } from '../ai/GraphAIChatbot';
+import { AIChatToggleBtn } from '../ai/AIChatToggleBtn';
 import type { GraphStateControls } from '../../visualization/useGraphState';
 import type { ExecutionTrace } from '../../core/types';
 import type { PlaybackControls } from '../../visualization/usePlayback';
@@ -70,6 +72,7 @@ export const MinimalStudio: React.FC<MinimalStudioProps> = ({
   } = graphState;
 
   const [isPresetsMenuOpen, setIsPresetsMenuOpen] = useState<boolean>(false);
+  const [isAIChatOpen, setIsAIChatOpen] = useState<boolean>(false);
   const [splitWidth, setSplitWidth] = useState<number>(460);
   const [inspectorHeight, setInspectorHeight] = useState<number>(250);
 
@@ -103,6 +106,13 @@ export const MinimalStudio: React.FC<MinimalStudioProps> = ({
   // Keyboard shortcut: Backspace or Delete to remove the currently selected vertex
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        if (isAIChatOpen) {
+          setIsAIChatOpen(false);
+          return;
+        }
+      }
+
       // Do not delete vertex if typing in an input or textarea
       if (
         e.target instanceof HTMLInputElement ||
@@ -148,6 +158,14 @@ export const MinimalStudio: React.FC<MinimalStudioProps> = ({
 
   const handleResetBoth = () => {
     resetGraph();
+    kruskalPlayback.reset();
+    primPlayback.reset();
+  };
+
+  const handleClearGraph = () => {
+    clearGraph();
+    onStartVertexChange('');
+    setSelectedVertexId(null);
     kruskalPlayback.reset();
     primPlayback.reset();
   };
@@ -254,6 +272,15 @@ export const MinimalStudio: React.FC<MinimalStudioProps> = ({
 
         {/* Right: Graph Presets & Mutation Actions */}
         <div className="mst-subtoolbar-right">
+          {/* Graph AI Assistant Button */}
+          <AIChatToggleBtn
+            variant="SUBTOOLBAR"
+            isOpen={isAIChatOpen}
+            onToggle={() => setIsAIChatOpen((prev) => !prev)}
+          />
+
+          <div className="mst-subtoolbar-divider" />
+
           {/* Preset Dropdown */}
           <div style={{ position: 'relative' }}>
             <button
@@ -342,13 +369,7 @@ export const MinimalStudio: React.FC<MinimalStudioProps> = ({
 
           <button
             className="mst-pill-btn danger"
-            onClick={() => {
-              if (window.confirm('Clear all vertices and edges from the canvas?')) {
-                clearGraph();
-                kruskalPlayback.reset();
-                primPlayback.reset();
-              }
-            }}
+            onClick={handleClearGraph}
             title="Clear all graph nodes and edges"
           >
             <Trash2 size={13} />
@@ -803,6 +824,19 @@ export const MinimalStudio: React.FC<MinimalStudioProps> = ({
           </div>
         </div>
       )}
+
+      {/* Graph-Aware AI Chatbot Assistant Drawer */}
+      <GraphAIChatbot
+        isOpen={isAIChatOpen}
+        onClose={() => setIsAIChatOpen(false)}
+        graph={graph}
+        kruskalTrace={kruskalTrace}
+        primTrace={primTrace}
+        kruskalStepIndex={kruskalPlayback.currentStepIndex}
+        primStepIndex={primPlayback.currentStepIndex}
+        viewMode={viewMode}
+        startVertexId={startVertexId}
+      />
     </div>
   );
 };
