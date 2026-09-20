@@ -294,6 +294,8 @@ export function App() {
         onNavigateHome={navigateHome}
         onNavigateStudio={navigateStudio}
         onScrollToSection={handleScrollToSection}
+        viewMode={viewMode}
+        onViewModeChange={setViewMode}
       />
 
       {/* View 1: Minimalist Home Screen */}

@@ -3,7 +3,6 @@ import {
   MousePointer,
   PlusCircle,
   Link,
-  Target,
   Shuffle,
   RotateCcw,
   Trash2,
@@ -13,7 +12,6 @@ import {
   SkipBack,
   SkipForward,
   RotateCw,
-  Columns,
 } from 'lucide-react';
 import { SVGCanvas } from '../graph/SVGCanvas';
 import { PRESET_GRAPHS } from '../../core/presets';
@@ -40,7 +38,7 @@ interface MinimalStudioProps {
   onStartVertexChange: (vertexId: string) => void;
   onEdgeClick: (edgeId: string) => void;
   viewMode: 'SIDE_BY_SIDE' | 'SINGLE_KRUSKAL' | 'SINGLE_PRIM';
-  onViewModeChange: (mode: 'SIDE_BY_SIDE' | 'SINGLE_KRUSKAL' | 'SINGLE_PRIM') => void;
+  onViewModeChange?: (mode: 'SIDE_BY_SIDE' | 'SINGLE_KRUSKAL' | 'SINGLE_PRIM') => void;
 }
 
 export const MinimalStudio: React.FC<MinimalStudioProps> = ({
@@ -53,7 +51,6 @@ export const MinimalStudio: React.FC<MinimalStudioProps> = ({
   onStartVertexChange,
   onEdgeClick,
   viewMode,
-  onViewModeChange,
 }) => {
   const {
     graph,
@@ -174,39 +171,8 @@ export const MinimalStudio: React.FC<MinimalStudioProps> = ({
     <div className="mst-studio-layout">
       {/* Secondary Sub-toolbar */}
       <div className="mst-subtoolbar">
-        {/* Left: View Switcher & Canvas Edit Modes */}
+        {/* Left: Canvas Edit Modes */}
         <div className="mst-subtoolbar-left">
-          {/* View Mode Switcher Pills */}
-          <div className="mst-view-pill-group">
-            <button
-              className={`mst-pill-btn ${viewMode === 'SIDE_BY_SIDE' ? 'active' : ''}`}
-              onClick={() => onViewModeChange('SIDE_BY_SIDE')}
-              title="Compare both algorithms side by side"
-            >
-              <Columns size={13} />
-              <span>Side-by-Side</span>
-            </button>
-
-            <button
-              className={`mst-pill-btn ${viewMode === 'SINGLE_KRUSKAL' ? 'active' : ''}`}
-              onClick={() => onViewModeChange('SINGLE_KRUSKAL')}
-              title="Focus on Kruskal's algorithm"
-            >
-              <span>Kruskal</span>
-            </button>
-
-            <button
-              className={`mst-pill-btn ${viewMode === 'SINGLE_PRIM' ? 'active' : ''}`}
-              onClick={() => onViewModeChange('SINGLE_PRIM')}
-              title="Focus on Prim's algorithm"
-            >
-              <span>Prim</span>
-            </button>
-          </div>
-
-          <div className="mst-subtoolbar-divider" />
-
-          {/* Edit Modes */}
           <span className="mst-subtoolbar-label">Edit:</span>
 
           <button
@@ -234,24 +200,6 @@ export const MinimalStudio: React.FC<MinimalStudioProps> = ({
           >
             <Link size={13} />
             <span>Add Edge</span>
-          </button>
-
-          {/* Prim Start Node Selector */}
-          <button
-            className="mst-pill-btn"
-            onClick={() => {
-              if (graph.vertices.length > 0) {
-                const currentIdx = graph.vertices.findIndex((v) => v.id === startVertexId);
-                const nextVertex = graph.vertices[(currentIdx + 1) % graph.vertices.length];
-                onStartVertexChange(nextVertex.id);
-              }
-            }}
-            title="Click to cycle Prim starting vertex"
-          >
-            <Target size={13} />
-            <span>
-              Start: {graph.vertices.find((v) => v.id === startVertexId)?.label || graph.vertices[0]?.label || 'None'}
-            </span>
           </button>
 
           {/* Selected Vertex Quick Remove Pill */}
