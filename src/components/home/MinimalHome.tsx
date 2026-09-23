@@ -674,6 +674,15 @@ export const MinimalHome: React.FC<MinimalHomeProps> = ({
           >
             GitHub <ExternalLink size={12} />
           </a>
+          <a
+            href="https://github.com/KTanzeelaMohammadi"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mst-footer-link"
+            style={{ display: 'flex', alignItems: 'center', gap: '4px' }}
+          >
+            KTanzeelaMohammadi <ExternalLink size={12} />
+          </a>
           <span className="mst-footer-text">MIT License</span>
         </div>
       </footer>
